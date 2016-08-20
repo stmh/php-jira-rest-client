@@ -28,7 +28,7 @@ class IssueService extends \JiraRestApi\JiraClient
         $ret = $this->exec($this->uri."/$issueIdOrKey", null);
 
         $this->log->addInfo("Result=\n".$ret);
-        return $this->getIssueFromJSON(json_decode($ret));
+        return $this->getIssueFromJSON(@json_decode($ret));
     }
 
     /**
@@ -218,7 +218,7 @@ class IssueService extends \JiraRestApi\JiraClient
         ));
 
         $ret = $this->exec("search", $data, 'POST');
-        $json = json_decode($ret);
+        $json = @json_decode($ret, false, 512, JSON_BIGINT_AS_STRING);
 
         $result = $this->json_mapper->map(
             $json, new IssueSearchResult()
